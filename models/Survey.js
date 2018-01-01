@@ -3,8 +3,7 @@ mongoose.Promise = global.Promise;
 const mongodbErrorHandler = require('mongoose-mongodb-errors');
 
 const surveySchema = new mongoose.Schema({
-  surveyName: {type: String},
-  surveyImages: {type: Array}
+  question: {type: String}
 });
 
 surveySchema.plugin(mongodbErrorHandler);

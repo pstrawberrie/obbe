@@ -9,6 +9,7 @@ mongoose.connection.on('error', (err) => {
 
 // Import models
 require('./models/Survey');
+require('./models/Image');
 
 //+ App Setup
 const path = require('path');
