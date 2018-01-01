@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
 const { catchErrors } = require('../handlers/errorHandlers');
 
 // Controllers
@@ -8,9 +9,11 @@ const apiController = require('../controllers/apiController');
 
 /* API */
 router.get('/api/survey/questions', 
+  cors(),
   catchErrors(apiController.getSurveyQuestions)
 )
 router.get('/api/survey/images/:number', 
+  cors(),
   catchErrors(apiController.getSurveyImages)
 )
 
