@@ -4,6 +4,9 @@ const QuestionResults = mongoose.model('QuestionResult');
 const Image = mongoose.model('Image');
 const ImageResults = mongoose.model('ImageResult');
 
+const questionsJSON = require('../data/questions.json');
+const imagesJSON = require('../data/images.json');
+
 // Get Survey Questions
 exports.getSurveyQuestions = async (req, res) => {
 
@@ -12,7 +15,23 @@ exports.getSurveyQuestions = async (req, res) => {
 
   await Question.find({})
   .then(result => {
-    res.json(result);
+    //check for questions and populate if they aren't proper
+    if(result.length != questionsJSON.length) {
+      Question.remove({}).then(result => {
+
+        Question.create(questionsJSON)
+        .then(result => {
+          console.log('updated questions');
+          Question.find({})
+          .then(result => {res.json(result)})
+          .catch(err => {console.log(err)})
+        })
+        .catch(err => {console.log(err)});
+
+      }).catch(err => {console.log(err)});
+    } else {
+      res.json(result);
+    }
   })
   .catch(err => {console.log(`error getting survey questions:\n${err}`)})
 
@@ -24,11 +43,27 @@ exports.getSurveyImages = async (req, res) => {
   // const testImage = new Image({url:'https://www.placehold.it/69x69'});
   // await testImage.save();
 
-  await Image.find({}).limit(parseInt(req.params.number))
+  await Image.find({})
   .then(result => {
-    res.json(result);
+    //check for images and populate if they aren't proper
+    if(result.length != imagesJSON.length) {
+      Image.remove({}).then(result => {
+
+        Image.create(imagesJSON)
+        .then(result => {
+          console.log('updated images');
+          Image.find({})
+          .then(result => {res.json(result)})
+          .catch(err => {console.log(err)})
+        })
+        .catch(err => {console.log(err)});
+
+      }).catch(err => {console.log(err)});
+    } else {
+      res.json(result);
+    }
   })
-  .catch(err => {console.log(`error getting images:\n${err}`)})
+  .catch(err => {console.log(`error getting survey questions:\n${err}`)})
 
 }
 
