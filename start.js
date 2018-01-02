@@ -8,8 +8,10 @@ mongoose.connection.on('error', (err) => {
 });
 
 // Import models
-require('./models/Survey');
+require('./models/Question');
+require('./models/QuestionResult');
 require('./models/Image');
+require('./models/ImageResult');
 
 //+ App Setup
 const path = require('path');
@@ -27,6 +29,7 @@ const errorHandlers = require('./handlers/errorHandlers');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ extended: true }));
 
 // Webpack
 if (app.get('env') === 'development') {
@@ -63,7 +66,8 @@ app.use((req, res, next) => {
 
 // Routes
 var routes = require('./routes/index');
-app.use('/', routes);
+const cors = require('cors');
+app.use('/', cors(), routes);
 
 // 404 Errors
 app.use(errorHandlers.notFound);
